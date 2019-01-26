@@ -2,15 +2,25 @@ import React, { Component } from 'react'
 import axios from "axios";
 
 export default class Fibonnaci extends Component {
-  state = {
-    seenIndices: [],
-    values: {},
-    index: ''
+  constructor() {
+    super();
+
+    this.state = {
+      seenIndices: [],
+      values: {},
+      index: ''
+    }
   }
 
   componentDidMount() {
     this.fetchValues();
     this.fetchIndices();
+
+    this.setState({
+      seenIndices: [],
+      values: {},
+      index: ''
+    });
   }
 
   async fetchValues() {
@@ -23,8 +33,8 @@ export default class Fibonnaci extends Component {
     this.setState({ seenIndices: seenIndices.data });
   }
 
-  async onSubmit(event) {
-    event.preventDefault();
+  handleClick = async e => {
+    e.preventDefault();
 
     await axios.post('/api/values', {
       index: this.state.index
@@ -54,7 +64,7 @@ export default class Fibonnaci extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={ this.onSubmit() }>
+        <form onSubmit={ this.handleClick }>
           <label>Enter your index:</label>
           <input type="number"
             value={this.state.index}
